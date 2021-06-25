@@ -3,21 +3,26 @@ import 'package:movie_app2/models/item_movie.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MoviesBloc {
-final apis = Apis();
-final _moviesFetcher = PublishSubject<ItemMovie>();
+  final apis = Apis();
+  final _moviesRecentlyFetcher = PublishSubject<ItemMovie>();
+  final _moviesContinueWatch= PublishSubject<ItemMovie>();
 
-Stream<ItemMovie> get allMovies => _moviesFetcher.stream;
+  Stream<ItemMovie> get recentlyAddedMovies => _moviesRecentlyFetcher.stream;
+  Stream<ItemMovie> get continueWatchMovie => _moviesContinueWatch.stream;
 
-fetchAllMovies() async {
-  ItemMovie itemMovie = await apis.fetchAllMovie();
-  if (!_moviesFetcher.isClosed) {
-    _moviesFetcher.sink.add(itemMovie);
+  fetchAllMovies() async {
+    ItemMovie itemMovieRecently = await apis.fetchRecentlyMovie();
+    if (!_moviesRecentlyFetcher.isClosed) {
+      _moviesRecentlyFetcher.sink.add(itemMovieRecently);
+    }
+    ItemMovie itemMovieContinueWatch = await apis.fetchContinueWatchMovie();
+    if (!_moviesContinueWatch.isClosed) {
+      _moviesContinueWatch.sink.add(itemMovieContinueWatch);
+    }
+  }
+
+  dispose() {
+    _moviesRecentlyFetcher.close();
+    _moviesContinueWatch.close();
   }
 }
-
-dispose() {
-  _moviesFetcher.close();
-}
-}
-
-final bloc = MoviesBloc();

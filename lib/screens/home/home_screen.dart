@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app2/apis/rest_client.dart';
 import 'package:movie_app2/configs/configs.dart';
@@ -7,7 +8,9 @@ import 'package:movie_app2/models/item_model.dart';
 import 'package:movie_app2/blocs/movie_bloc.dart';
 import 'package:movie_app2/models/item_movie.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:movie_app2/screens/search/searchScreen.dart';
 import 'package:movie_app2/utils/utils.dart';
+import 'package:movie_app2/widgets/continue_watch.dart';
 import 'package:movie_app2/widgets/recently_added.dart';
 
 // class HomeScreen extends StatelessWidget {
@@ -26,6 +29,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  MoviesBloc bloc =new MoviesBloc();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,24 +60,34 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 30, 10),
                 child: Container(
+                  width: double.infinity,
                   height: 45,
-                  child: TextField(
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                    decoration: InputDecoration(
-                        labelText: "Search",
-                        prefixIcon: Container(
-                          child: Icon(
-                            Icons.search,
-                            size: 30,
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xffCED0D2), width: 1),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30)))),
-                  ),
+                  child: TextButton(
+                    style: TextButton.styleFrom(shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      side: BorderSide(color: Color(0xffCED0D2), width: 1),
+                    ),),
+                    onPressed: (){
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context)=>SearchScreen()));
+                    },
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: Stack(
+                        alignment: AlignmentDirectional.centerStart,
+                        children: [
+                          SizedBox(height:40,
+                              width:40,child: Center(child: Icon(Icons.search,color: Colors.black,),)),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 40,right: 40),
+                            child: Text("Search for movie",style: TextStyle(fontSize: 16,color: Colors.grey),),
+                          )
+                        ],
+                      ),
+                    ),
                 ),
+              ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 30, 10),
@@ -91,17 +105,58 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               StreamBuilder(
-                stream: bloc.allMovies,
+                stream: bloc.recentlyAddedMovies,
                 builder: (context, AsyncSnapshot<ItemMovie> snapshot) {
                   if (snapshot.hasData) {
-                    print("sss");
                     return buildListRecentlyAdded(snapshot);
                   } else if (snapshot.hasError) {
                     return Text(snapshot.error.toString());
                   }
                   return Center(child: CircularProgressIndicator());
                 },
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 30, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    modified_text(text:"Continue Watch...",size: 16,fontWeight: FontWeight.bold, color: Colors.black,),
+                    InkWell(
+                      child: Text(
+                        "See all",
+                      ),
+                      onTap: () {},
+                    )
+                  ],
+                ),
+              ),
+              StreamBuilder(
+                stream: bloc.continueWatchMovie,
+                builder: (context, AsyncSnapshot<ItemMovie> snapshot) {
+                  if (snapshot.hasData) {
+                    return buildListContinueWatch(snapshot);
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  }
+                  return Center(child: CircularProgressIndicator());
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 30, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    modified_text(text:"Trending",size: 16,fontWeight: FontWeight.bold, color: Colors.black,),
+                    InkWell(
+                      child: Text(
+                        "See all",
+                      ),
+                      onTap: () {},
+                    )
+                  ],
+                ),
+              ),
+
             ],
           ),
         ),
@@ -122,8 +177,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
-
-    print("testt");
     bloc.dispose();
     super.dispose();
 

@@ -4,27 +4,29 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../configs/constants.dart';
 
 class RestClient {
-  // RestClient(
-  //   this._dio, {
-  //   int receiveTimeout,
-  //   int connectTimeout,
-  // }) {
-  //   _dio.options = BaseOptions(
-  //     baseUrl: AppConstants.baseUrl,
-  //     receiveTimeout: receiveTimeout ?? AppConstants.receiveTimeout,
-  //     connectTimeout: connectTimeout ?? AppConstants.connectTimeout,
-  //   );
-  //   _dio.interceptors.add(PrettyDioLogger());
-  // }
-  Dio _dio;
-  RestClient() {
-    _dio = Dio(BaseOptions(
+  RestClient(
+    this._dio, {
+    int receiveTimeout,
+    int connectTimeout,
+  }) {
+    _dio.options = BaseOptions(
       baseUrl: AppConstants.baseUrl,
-      // receiveTimeout: receiveTimeout ?? AppConstants.receiveTimeout,
-      // connectTimeout: connectTimeout ?? AppConstants.connectTimeout,
-    ));
+      receiveTimeout: receiveTimeout ?? AppConstants.receiveTimeout,
+      connectTimeout: connectTimeout ?? AppConstants.connectTimeout,
+    );
     _dio.interceptors.add(PrettyDioLogger());
   }
+  final Dio _dio;
+
+  //Dio _dio;
+  // RestClient() {
+  //   _dio = Dio(BaseOptions(
+  //     baseUrl: AppConstants.baseUrl,
+  //     // receiveTimeout: receiveTimeout ?? AppConstants.receiveTimeout,
+  //     // connectTimeout: connectTimeout ?? AppConstants.connectTimeout,
+  //   ));
+  //   _dio.interceptors.add(PrettyDioLogger());
+  // }
 
 
   // Get:-----------------------------------------------------------------------

@@ -27,7 +27,7 @@ Widget buildListRecentlyAdded(AsyncSnapshot<ItemMovie> snapshot) {
           children: <Widget>[
             ClipRRect(
               child: Image.network(
-                'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].poster_path}',
+                'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].backdrop_path}',
                 fit: BoxFit.cover,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height/4,

@@ -10,14 +10,14 @@ import 'package:movie_app2/models/item_movie.dart';
 class Apis{
   final movieApi= MovieApiProvider();
 
-  Future<ItemMovie> fetchAllMovie()=> movieApi.getListMovie();
+  Future<ItemMovie> fetchRecentlyMovie()=> movieApi.getListRecentlyMovie();
+  Future<ItemMovie> fetchContinueWatchMovie()=> movieApi.getListContinueWatchMovie();
 
 }
 
 class MovieApiProvider{
-
-  RestClient restClient=RestClient();
-  Future<ItemMovie> getListMovie() async{
+  RestClient restClient=RestClient(Dio());
+  Future<ItemMovie> getListRecentlyMovie() async{
     Response response;
     try {
       response = await restClient.get('movie/popular',queryParameters: {'api_key': AppConstants.apiKey});
@@ -30,5 +30,38 @@ class MovieApiProvider{
       print(e);
     }
   }
+
+//  RestClient restClient=RestClient(Dio());
+  Future<ItemMovie> getListContinueWatchMovie() async{
+    Response response;
+    try {
+      response = await restClient.get('movie/now_playing',queryParameters: {'api_key': AppConstants.apiKey});
+      if (response.statusCode == 200) {
+        return ItemMovie.fromJson(response.data);
+      } else {
+        print("There is some problem status code not 200");
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+
 }
+// class ContinueWatchMovieApiProvider{
+//   RestClient restClient=RestClient(Dio());
+//   Future<ItemMovie> getListContinueWatchMovie() async{
+//     Response response;
+//     try {
+//       response = await restClient.get('movie/now_playing',queryParameters: {'api_key': AppConstants.apiKey});
+//       if (response.statusCode == 200) {
+//         return ItemMovie.fromJson(response.data);
+//       } else {
+//         print("There is some problem status code not 200");
+//       }
+//     } on Exception catch (e) {
+//       print(e);
+//     }
+//   }
+// }
 
