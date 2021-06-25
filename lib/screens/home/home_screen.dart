@@ -122,6 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
+
+    print("testt");
     bloc.dispose();
     super.dispose();
 

@@ -13,7 +13,6 @@ fetchAllMovies() async {
   if (!_moviesFetcher.isClosed) {
     _moviesFetcher.sink.add(itemMovie);
   }
-
 }
 
 dispose() {
