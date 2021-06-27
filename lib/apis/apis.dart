@@ -12,6 +12,7 @@ class Apis{
 
   Future<ItemMovie> fetchRecentlyMovie()=> movieApi.getListRecentlyMovie();
   Future<ItemMovie> fetchContinueWatchMovie()=> movieApi.getListContinueWatchMovie();
+  Future<ItemMovie> fetchMovieSearch(String str)=> movieApi.getListMovieSearch(str);
 
 }
 
@@ -44,6 +45,21 @@ class MovieApiProvider{
     } on Exception catch (e) {
       print(e);
     }
+  }
+
+  Future<ItemMovie> getListMovieSearch(String str) async{
+    Response response;
+    try {
+      response = await restClient.get('search/movie',queryParameters: {'api_key': AppConstants.apiKey,'query':str});
+      if (response.statusCode == 200) {
+        return ItemMovie.fromJson(response.data);
+      } else {
+        print("There is some problem status code not 200");
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+
   }
 
 
