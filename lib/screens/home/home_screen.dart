@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app2/apis/rest_client.dart';
 import 'package:movie_app2/configs/configs.dart';
-import 'package:movie_app2/models/item_model.dart';
 import 'package:movie_app2/blocs/movie_bloc.dart';
 import 'package:movie_app2/models/item_movie.dart';
 import 'package:cached_network_image/cached_network_image.dart';

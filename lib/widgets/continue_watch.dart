@@ -6,6 +6,7 @@ import 'package:movie_app2/configs/configs.dart';
 import 'package:movie_app2/blocs/movie_bloc.dart';
 import 'package:movie_app2/models/item_movie.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:movie_app2/screens/detail/detail_screen.dart';
 import 'package:movie_app2/utils/utils.dart';
 Widget buildListContinueWatch(AsyncSnapshot<ItemMovie> snapshot) {
   return  SingleChildScrollView(
@@ -23,7 +24,15 @@ Widget buildListContinueWatch(AsyncSnapshot<ItemMovie> snapshot) {
       ),
       itemBuilder: (BuildContext context, int index, int pageViewIndex) {
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            print("test"+snapshot.data.results[index].id.toString());
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                builder: (context) => MovieDetailScreen(movieId: snapshot.data.results[index].id),
+            ),
+            );
+            },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
