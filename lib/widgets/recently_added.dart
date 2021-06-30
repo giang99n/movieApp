@@ -8,10 +8,11 @@ import 'package:movie_app2/models/item_movie.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie_app2/screens/detail/detail_screen.dart';
 import 'package:movie_app2/utils/utils.dart';
-Widget buildListRecentlyAdded(AsyncSnapshot<ItemMovie> snapshot) {
+Widget buildListRecentlyAdded(AsyncSnapshot<ItemMovie> snapshot,BuildContext context) {
   return  CarouselSlider.builder(
     itemCount: snapshot.data.results.length,
     options: CarouselOptions(
+      height: MediaQuery.of(context).size.height*1.1 / 4,
       enableInfiniteScroll: true,
       autoPlay: true,
       autoPlayInterval: Duration(seconds: 5),
@@ -37,7 +38,7 @@ Widget buildListRecentlyAdded(AsyncSnapshot<ItemMovie> snapshot) {
               child: Image.network(
                 'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].backdrop_path}',
                 fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width*3/4,
                 height: MediaQuery.of(context).size.height/4,
               ),
               borderRadius: BorderRadius.all(

@@ -274,7 +274,7 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                                     child: Text("Info", style: TextStyle(fontSize: 15),),
                                   ),
                                   Tab(
-                                    child: Text("Photos", style: TextStyle(fontSize: 15),),
+                                    child: Text("Photos", style: TextStyle(fontSize: 15),maxLines: 1,),
                                   ),
                                   Tab(
                                     child: Text("Reviews", style: TextStyle(fontSize: 15),  overflow: TextOverflow.ellipsis,maxLines: 1,),
@@ -315,7 +315,7 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                 height: 50,
                 child: ElevatedButton(
                   style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25)),),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(22)),),
                         backgroundColor: Colors.red
                       ),
                   child: Text("Watch movie",style: TextStyle(fontSize: 16,color: Colors.white),),
@@ -339,61 +339,63 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
 
   }
     Widget _info(BuildContext context) {
-     return Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 15,10,10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "RUNTIME: ",
-                      style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(width: 50,),
-                    Text(
-                      movieDetail.runtime.toString()+"mins",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                  ],
+     return SingleChildScrollView(
+       child: Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 15,10,10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "RUNTIME: ",
+                        style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(width: 50,),
+                      Text(
+                        movieDetail.runtime.toString()+"mins",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 15,10,10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Storyline",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                       movieDetail.overview,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 4,
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                  ],
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 15,10,10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Storyline",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                         movieDetail.overview,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 4,
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-          ],
+            ],
+          ),
         ),
-      );
+     );
     }
 
     Widget _photos(BuildContext context) {

@@ -12,16 +12,6 @@ import 'package:movie_app2/utils/utils.dart';
 import 'package:movie_app2/widgets/continue_watch.dart';
 import 'package:movie_app2/widgets/recently_added.dart';
 
-// class HomeScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Scaffold(
-//       body: Center(
-//         child: Text('Home Screen'),
-//       ),
-//     );
-//   }
-// }
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -33,27 +23,30 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.fromLTRB(30, 30, 0, 0),
+        padding: EdgeInsets.fromLTRB(30, 10, 0, 0),
         constraints: BoxConstraints.expand(),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Movie",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 35,
-                        fontWeight: FontWeight.w800),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
-                    child: CircleAvatar(
-                        backgroundImage: AssetImage(AppAssets.cat)),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Movie",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 35,
+                          fontWeight: FontWeight.w800),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
+                      child: CircleAvatar(
+                          backgroundImage: AssetImage(AppAssets.cat)),
+                    ),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 30, 10),
@@ -107,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 stream: bloc.recentlyAddedMovies,
                 builder: (context, AsyncSnapshot<ItemMovie> snapshot) {
                   if (snapshot.hasData) {
-                    return buildListRecentlyAdded(snapshot);
+                    return buildListRecentlyAdded(snapshot,context);
                   } else if (snapshot.hasError) {
                     return Text(snapshot.error.toString());
                   }
@@ -133,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 stream: bloc.continueWatchMovie,
                 builder: (context, AsyncSnapshot<ItemMovie> snapshot) {
                   if (snapshot.hasData) {
-                    return buildListContinueWatch(snapshot);
+                    return buildListContinueWatch(snapshot,context);
                   } else if (snapshot.hasError) {
                     return Text(snapshot.error.toString());
                   }

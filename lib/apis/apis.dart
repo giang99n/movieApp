@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:movie_app2/apis/rest_client.dart';
 import 'package:movie_app2/configs/constants.dart';
+import 'package:movie_app2/models/item_actor.dart';
 import 'package:movie_app2/models/item_movie.dart';
 import 'package:movie_app2/models/movie_detail.dart';
 
@@ -14,6 +15,7 @@ class Apis{
   Future<ItemMovie> fetchContinueWatchMovie()=> movieApi.getListContinueWatchMovie();
   Future<ItemMovie> fetchMovieSearch(String str)=> movieApi.getListMovieSearch(str);
   Future<MovieDetail> getMovieDetail(int id)=> movieApi.getMovieDetail(id);
+  Future<Actors> getListTrendingActor()=> movieApi.getListTrendingActor();
 }
 
 class MovieApiProvider{
@@ -83,9 +85,25 @@ class MovieApiProvider{
       var youtubeId = response.data['results'][0]['key'];
       return youtubeId;
     } catch (error, stacktrace) {
-      throw Exception(
-          'Exception accoured: $error with stacktrace: $stacktrace');
+      return null;
+
     }
   }
+
+  Future<Actors> getListTrendingActor() async{
+    Response response;
+    try {
+      response = await restClient.get('/trending/person/week',queryParameters: {'api_key': AppConstants.apiKey});
+      if (response.statusCode == 200) {
+        return Actors.fromJson(response.data);
+      } else {
+        print("There is some problem status code not 200");
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+
 }
 
