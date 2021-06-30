@@ -6,6 +6,7 @@ import 'package:movie_app2/configs/configs.dart';
 import 'package:movie_app2/blocs/movie_bloc.dart';
 import 'package:movie_app2/models/item_movie.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:movie_app2/screens/detail/detail_screen.dart';
 import 'package:movie_app2/utils/utils.dart';
 Widget buildListRecentlyAdded(AsyncSnapshot<ItemMovie> snapshot) {
   return  CarouselSlider.builder(
@@ -21,7 +22,14 @@ Widget buildListRecentlyAdded(AsyncSnapshot<ItemMovie> snapshot) {
     ),
     itemBuilder: (BuildContext context, int index, int pageViewIndex) {
       return GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MovieDetailScreen(movieId: snapshot.data.results[index].id),
+            ),
+          );
+        },
         child: Stack(
           alignment: Alignment.bottomLeft,
           children: <Widget>[

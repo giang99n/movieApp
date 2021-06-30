@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app2/blocs/search_bloc.dart';
 import 'package:movie_app2/models/item_movie.dart';
+import 'package:movie_app2/screens/detail/detail_screen.dart';
 import 'package:movie_app2/screens/home/home_screen.dart';
 import 'package:movie_app2/utils/utils.dart';
 import 'package:movie_app2/widgets/continue_watch.dart';
@@ -31,6 +33,9 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.black, //
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -122,7 +127,14 @@ class _SearchScreenState extends State<SearchScreen> {
       itemCount: snapshot.data.results.length,
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MovieDetailScreen(movieId: snapshot.data.results[index].id),
+              ),
+            );
+          },
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
@@ -167,30 +179,28 @@ class _SearchScreenState extends State<SearchScreen> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Text("Action",
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.black54, fontSize: 14,),
-                        ),
                         Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow, size: 18,
+                          children: [
+                            RatingBarIndicator(
+                              rating:  double.parse(snapshot.data.results[index].vote_average )/ 2,
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              itemCount: 5,
+                              itemSize: 14,
+                              direction: Axis.horizontal,
                             ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow, size: 18,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow, size: 18,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow, size: 18,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 12),
+                              child:
+                              Text((  double.parse(snapshot.data.results[index].vote_average )/ 2).toString()),
                             ),
                           ],
+                        ),
+                        Text(snapshot.data.results[index].vote_count.toString() + " Ratings",style: TextStyle(fontSize: 12)),
+                        SizedBox(
+                          height: 10,
                         ),
                         Container(
                           width: 160,

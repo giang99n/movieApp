@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app2/apis/rest_client.dart';
 import 'package:movie_app2/configs/configs.dart';
 import 'package:movie_app2/blocs/movie_bloc.dart';
@@ -37,7 +38,7 @@ Widget buildListContinueWatch(AsyncSnapshot<ItemMovie> snapshot) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,15,0),
+                padding: const EdgeInsets.fromLTRB(0,0,18,0),
                 child: ClipRRect(
                     child: Image.network(
                       'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].poster_path}',
@@ -62,6 +63,28 @@ Widget buildListContinueWatch(AsyncSnapshot<ItemMovie> snapshot) {
                     ),
                   overflow: TextOverflow.ellipsis,
                   ),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: RatingBarIndicator(
+                      rating: double.parse(snapshot.data.results[index].vote_average )/ 2,
+                      itemBuilder: (context, index) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      itemCount: 5,
+                      itemSize: 14,
+                      direction: Axis.horizontal,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child:
+                    Text(( double.parse(snapshot.data.results[index].vote_average ) / 2).toString(),style: TextStyle(fontSize: 12),),
+                  ),
+                ],
               ),
             ],
           ),

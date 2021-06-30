@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              TextButton(onPressed: onPressedTest, child: Text("test")),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 30, 10),
                 child: Container(
@@ -65,7 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextButton.styleFrom(shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       side: BorderSide(color: Color(0xffCED0D2), width: 1),
-                    ),),
+                    ),
+                    ),
                     onPressed: (){
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context)=>SearchScreen()));
@@ -161,9 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
-
-  void onPressedTest() {
   }
 
   @override
