@@ -14,7 +14,6 @@ class Apis{
   Future<ItemMovie> fetchContinueWatchMovie()=> movieApi.getListContinueWatchMovie();
   Future<ItemMovie> fetchMovieSearch(String str)=> movieApi.getListMovieSearch(str);
   Future<MovieDetail> getMovieDetail(int id)=> movieApi.getMovieDetail(id);
-  Future<MovieDetail> getYoutubeId(int movieId) => movieApi.getYoutubeId(movieId);
 }
 
 class MovieApiProvider{
@@ -68,7 +67,9 @@ class MovieApiProvider{
     try {
       response = await restClient.get('movie/$movieId',queryParameters: {'api_key': AppConstants.apiKey});
       if (response.statusCode == 200) {
-        return MovieDetail.fromJson(response.data);
+        MovieDetail movieDetail = MovieDetail.fromJson(response.data);
+        movieDetail.trailerId= await getYoutubeId(movieId);
+        return movieDetail;
       } else {
         print("There is some problem status code not 200");
       }
@@ -76,12 +77,11 @@ class MovieApiProvider{
       print(e);
     }
   }
-  Future<MovieDetail> getYoutubeId(int movieId) async {
+  Future<String> getYoutubeId(int movieId) async {
     try {
       final response = await restClient.get('/movie/$movieId/videos',queryParameters: {'api_key': AppConstants.apiKey});
       var youtubeId = response.data['results'][0]['key'];
-      MovieDetail movieDetail = MovieDetail.fromJson(response.data);
-      movieDetail.trailerId = youtubeId;
+      return youtubeId;
     } catch (error, stacktrace) {
       throw Exception(
           'Exception accoured: $error with stacktrace: $stacktrace');
