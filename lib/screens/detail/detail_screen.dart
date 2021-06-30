@@ -67,7 +67,6 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
             } else
               genres = genres + movieDetail.genres[i].name.toString() + ", ";
           }
-          ;
 
           return Stack(
             children: [
@@ -113,10 +112,6 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                         final youtubeUrl =
                             'https://www.youtube.com/embed/${movieDetail.trailerId}';
                         if (await canLaunch(youtubeUrl)) {
-                          print(youtubeUrl);
-                          for (int i = 0; i < movieDetail.genres.length; i++) {
-                            print(movieDetail.genres[i].name);
-                          }
                           await launch(youtubeUrl);
                         }
                       },
@@ -128,8 +123,102 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                       )),
                     ),
                   ),
+                  // SizedBox(
+                  //   height: MediaQuery.of(context).size.height / 8,
+                  // ),
+                  // Padding(
+                  //   padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Container(
+                  //         child: Text(
+                  //           movieDetail.title,
+                  //           overflow: TextOverflow.ellipsis,
+                  //           style: TextStyle(
+                  //               fontWeight: FontWeight.bold,
+                  //               fontSize: 26,
+                  //               color: Colors.black),
+                  //         ),
+                  //       ),
+                  //       Text(
+                  //         genres,
+                  //         overflow: TextOverflow.ellipsis,
+                  //         style: TextStyle(color: Colors.black54),
+                  //       ),
+                  //       Row(
+                  //         children: [
+                  //           RatingBarIndicator(
+                  //             rating: movieDetail.voteAverage / 2,
+                  //             itemBuilder: (context, index) => Icon(
+                  //               Icons.star,
+                  //               color: Colors.amber,
+                  //             ),
+                  //             itemCount: 5,
+                  //             itemSize: 20,
+                  //             direction: Axis.horizontal,
+                  //           ),
+                  //           Padding(
+                  //             padding: const EdgeInsets.only(left: 12),
+                  //             child:
+                  //                 Text((movieDetail.voteAverage / 2).toString()),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       Text(movieDetail.voteCount.toString() + " Ratings"),
+                  //       SizedBox(height: 20,),
+                  //       Container(
+                  //         height:MediaQuery.of(context).size.height / 3 ,
+                  //         width: double.infinity,
+                  //         child: Column(
+                  //           children: [
+                  //             TabBar(
+                  //               unselectedLabelColor: Colors.black54,
+                  //               labelColor: Colors.red,
+                  //               tabs: [
+                  //                 Tab(
+                  //                   child: Text("Info", style: TextStyle(fontSize: 15),),
+                  //                 ),
+                  //                 Tab(
+                  //                   child: Text("Photos", style: TextStyle(fontSize: 15),),
+                  //                 ),
+                  //                 Tab(
+                  //                   child: Text("Reviews", style: TextStyle(fontSize: 15),  overflow: TextOverflow.ellipsis,maxLines: 1,),
+                  //                 ),
+                  //                 Tab(
+                  //                   child: Text("Video", style: TextStyle(fontSize: 15),
+                  //                   ),
+                  //                 ),
+                  //
+                  //               ],
+                  //               controller: _tabController,
+                  //               indicatorSize: TabBarIndicatorSize.tab,
+                  //             ),
+                  //             Expanded(
+                  //               child: TabBarView(
+                  //                 children: [
+                  //                  _info(context),
+                  //                   _photos(context),
+                  //                   _reviews(context),
+                  //                   _video(context),
+                  //                 ],
+                  //                 controller: _tabController,
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //
+                  //     ],
+                  //   ),
+                  // )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   SizedBox(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height / 3,
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
@@ -166,7 +255,7 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                             Padding(
                               padding: const EdgeInsets.only(left: 12),
                               child:
-                                  Text((movieDetail.voteAverage / 2).toString()),
+                              Text((movieDetail.voteAverage / 2).toString()),
                             ),
                           ],
                         ),
@@ -185,10 +274,10 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                                     child: Text("Info", style: TextStyle(fontSize: 15),),
                                   ),
                                   Tab(
-                                    child: Text("Reviews", style: TextStyle(fontSize: 15),),
+                                    child: Text("Photos", style: TextStyle(fontSize: 15),),
                                   ),
                                   Tab(
-                                    child: Text("Photos", style: TextStyle(fontSize: 15),),
+                                    child: Text("Reviews", style: TextStyle(fontSize: 15),  overflow: TextOverflow.ellipsis,maxLines: 1,),
                                   ),
                                   Tab(
                                     child: Text("Video", style: TextStyle(fontSize: 15),
@@ -202,9 +291,9 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                               Expanded(
                                 child: TabBarView(
                                   children: [
-                                   _info(context),
-                                    _reviews(context),
+                                    _info(context),
                                     _photos(context),
+                                    _reviews(context),
                                     _video(context),
                                   ],
                                   controller: _tabController,
@@ -229,7 +318,15 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25)),),
                         backgroundColor: Colors.red
                       ),
-                  child: Text("Watch movie",style: TextStyle(fontSize: 16,color: Colors.white),),),
+                  child: Text("Watch movie",style: TextStyle(fontSize: 16,color: Colors.white),),
+                  onPressed: () async {
+                    final youtubeUrl =
+                        'https://www.youtube.com/embed/${movieDetail.trailerId}';
+                    if (await canLaunch(youtubeUrl)) {
+                      await launch(youtubeUrl);
+                    }
+                  },
+                ),
               ),
 
             ],
@@ -244,30 +341,104 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
     Widget _info(BuildContext context) {
      return Padding(
         padding: const EdgeInsets.only(top: 15),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 15,10,10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "RUNTIME: ",
+                      style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(width: 50,),
+                    Text(
+                      movieDetail.runtime.toString()+"mins",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 15,10,10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Storyline",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                       movieDetail.overview,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 4,
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+          ],
+        ),
+      );
+    }
+
+    Widget _photos(BuildContext context) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 15),
         child: Container(
-          child: Text(
-            "Overview: "+ movieDetail.overview,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 4,
-            style: TextStyle(color: Colors.black54),
+          height: 155,
+          child: ListView.separated(
+            separatorBuilder: (context, index) =>
+                VerticalDivider(
+                  color: Colors.transparent,
+                  width: 5,
+                ),
+            scrollDirection: Axis.horizontal,
+            itemCount: movieDetail.productionCompanies.length,
+            itemBuilder: (context, index) {
+              return Container(
+                width: MediaQuery.of(context).size.width * 3/4,
+                child: Card(
+                  elevation: 3,
+                  borderOnForeground: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                      placeholder: (context, url) => Center(
+                        child: Platform.isAndroid
+                            ? CircularProgressIndicator()
+                            : CupertinoActivityIndicator(),
+                      ),
+                      imageUrl:
+                      'https://image.tmdb.org/t/p/w500${movieDetail.productionCompanies[index].logoPath}',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       );
     }
     Widget _reviews(BuildContext context) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Container(
-          child: Text(
-            "Overview: "+ movieDetail.overview,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 4,
-            style: TextStyle(color: Colors.black54),
-          ),
-        ),
-      );
-    }
-    Widget _photos(BuildContext context) {
       return Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Container(

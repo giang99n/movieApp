@@ -1,4 +1,5 @@
 //import 'package:device_preview/device_preview.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
 import 'configs/constants.dart';
@@ -24,7 +25,7 @@ class _MovieAppState extends State<MovieApp> {
       navigatorKey: AppNavigator.navigatorKey,
       onGenerateRoute: AppNavigator.onGenerateRoute,
       home: SplashScreen(),
-      //builder: DevicePreview.appBuilder,
+      builder: DevicePreview.appBuilder,
     );
   }
 }
