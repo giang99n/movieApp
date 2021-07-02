@@ -24,6 +24,7 @@ Widget buildListRecentlyAdded(AsyncSnapshot<ItemMovie> snapshot,BuildContext con
     itemBuilder: (BuildContext context, int index, int pageViewIndex) {
       return GestureDetector(
         onTap: () {
+          print(snapshot.data.results[index].id);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -35,11 +36,19 @@ Widget buildListRecentlyAdded(AsyncSnapshot<ItemMovie> snapshot,BuildContext con
           alignment: Alignment.bottomLeft,
           children: <Widget>[
             ClipRRect(
-              child: Image.network(
-                'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].backdrop_path}',
+              child: CachedNetworkImage(
+                imageUrl: 'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].backdrop_path}',
                 fit: BoxFit.cover,
                 width: MediaQuery.of(context).size.width*3/4,
                 height: MediaQuery.of(context).size.height/4,
+                errorWidget: (context, url, error) => Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/img_not_found.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
               borderRadius: BorderRadius.all(
                 Radius.circular(10),

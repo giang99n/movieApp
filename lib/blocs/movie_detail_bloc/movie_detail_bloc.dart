@@ -21,6 +21,7 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent,MovieDetailState>{
     yield MovieDetailLoading();
     try {
       final movieDetail = await apiRepository.getMovieDetail(id);
+      print(movieDetail.toString()+"bloc");
       yield MovieDetailLoaded(movieDetail);
 
     } on Exception catch (e) {

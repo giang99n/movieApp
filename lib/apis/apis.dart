@@ -69,8 +69,11 @@ class MovieApiProvider{
     try {
       response = await restClient.get('movie/$movieId',queryParameters: {'api_key': AppConstants.apiKey});
       if (response.statusCode == 200) {
+        print("bloc"+response.data.toString());
         MovieDetail movieDetail = MovieDetail.fromJson(response.data);
+
         movieDetail.trailerId= await getYoutubeId(movieId);
+
         return movieDetail;
       } else {
         print("There is some problem status code not 200");

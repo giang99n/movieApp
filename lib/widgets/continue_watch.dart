@@ -41,9 +41,17 @@ Widget buildListContinueWatch(AsyncSnapshot<ItemMovie> snapshot,BuildContext con
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0,0,18,0),
                     child: ClipRRect(
-                        child: Image.network(
-                          'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].poster_path}',
+                        child: CachedNetworkImage(
+                          imageUrl: 'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].poster_path}',
                           fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/img_not_found.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         ),
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),

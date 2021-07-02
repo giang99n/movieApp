@@ -52,6 +52,7 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
       return BlocBuilder<MovieDetailBloc, MovieDetailState>(
           builder: (context, state) {
         if (state is MovieDetailLoading) {
+          print("loading");
           return Center(
             child: Platform.isAndroid
                 ? CircularProgressIndicator()
@@ -59,7 +60,7 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
           );
         } else if (state is MovieDetailLoaded) {
           movieDetail = state.detail;
-
+          print( state.detail.toString()+"saaaaaaaaaaaaa");
           String genres = "";
           for (int i = 0; i < movieDetail.genres.length; i++) {
             if (i == movieDetail.genres.length - 1) {
@@ -79,7 +80,6 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                     width: double.infinity,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => Container(
-
                       child: Platform.isAndroid
                           ? CircularProgressIndicator()
                           : CupertinoActivityIndicator(),
@@ -97,7 +97,29 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                     bottomRight: Radius.circular(30),
                   ),
                 ),
-              ),
+              ),Positioned(
+                top: 5,left: 0,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 3,
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () async {
+                          final youtubeUrl =
+                              'https://www.youtube.com/embed/${movieDetail.trailerId}';
+                          if (await canLaunch(youtubeUrl)) {
+                            await launch(youtubeUrl);
+                          }
+                        },
+                        child: Center(
+                            child: Icon(
+                              Icons.play_circle_outline,
+                              color: Colors.grey,
+                              size: 95,
+                            )),
+                      ),
+                    ),
+                  ),),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -105,113 +127,7 @@ class _BuildDetailBodyState extends State<BuildDetailBody> with SingleTickerProv
                     backgroundColor: Colors.transparent,
                     elevation: 0,
                   ),
-                  Container(
-                    padding: EdgeInsets.only(top: 20),
-                    child: GestureDetector(
-                      onTap: () async {
-                        final youtubeUrl =
-                            'https://www.youtube.com/embed/${movieDetail.trailerId}';
-                        if (await canLaunch(youtubeUrl)) {
-                          await launch(youtubeUrl);
-                        }
-                      },
-                      child: Center(
-                          child: Icon(
-                        Icons.play_circle_outline,
-                        color: Colors.grey,
-                        size: 95,
-                      )),
-                    ),
-                  ),
-                  // SizedBox(
-                  //   height: MediaQuery.of(context).size.height / 8,
-                  // ),
-                  // Padding(
-                  //   padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Container(
-                  //         child: Text(
-                  //           movieDetail.title,
-                  //           overflow: TextOverflow.ellipsis,
-                  //           style: TextStyle(
-                  //               fontWeight: FontWeight.bold,
-                  //               fontSize: 26,
-                  //               color: Colors.black),
-                  //         ),
-                  //       ),
-                  //       Text(
-                  //         genres,
-                  //         overflow: TextOverflow.ellipsis,
-                  //         style: TextStyle(color: Colors.black54),
-                  //       ),
-                  //       Row(
-                  //         children: [
-                  //           RatingBarIndicator(
-                  //             rating: movieDetail.voteAverage / 2,
-                  //             itemBuilder: (context, index) => Icon(
-                  //               Icons.star,
-                  //               color: Colors.amber,
-                  //             ),
-                  //             itemCount: 5,
-                  //             itemSize: 20,
-                  //             direction: Axis.horizontal,
-                  //           ),
-                  //           Padding(
-                  //             padding: const EdgeInsets.only(left: 12),
-                  //             child:
-                  //                 Text((movieDetail.voteAverage / 2).toString()),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //       Text(movieDetail.voteCount.toString() + " Ratings"),
-                  //       SizedBox(height: 20,),
-                  //       Container(
-                  //         height:MediaQuery.of(context).size.height / 3 ,
-                  //         width: double.infinity,
-                  //         child: Column(
-                  //           children: [
-                  //             TabBar(
-                  //               unselectedLabelColor: Colors.black54,
-                  //               labelColor: Colors.red,
-                  //               tabs: [
-                  //                 Tab(
-                  //                   child: Text("Info", style: TextStyle(fontSize: 15),),
-                  //                 ),
-                  //                 Tab(
-                  //                   child: Text("Photos", style: TextStyle(fontSize: 15),),
-                  //                 ),
-                  //                 Tab(
-                  //                   child: Text("Reviews", style: TextStyle(fontSize: 15),  overflow: TextOverflow.ellipsis,maxLines: 1,),
-                  //                 ),
-                  //                 Tab(
-                  //                   child: Text("Video", style: TextStyle(fontSize: 15),
-                  //                   ),
-                  //                 ),
-                  //
-                  //               ],
-                  //               controller: _tabController,
-                  //               indicatorSize: TabBarIndicatorSize.tab,
-                  //             ),
-                  //             Expanded(
-                  //               child: TabBarView(
-                  //                 children: [
-                  //                  _info(context),
-                  //                   _photos(context),
-                  //                   _reviews(context),
-                  //                   _video(context),
-                  //                 ],
-                  //                 controller: _tabController,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //
-                  //     ],
-                  //   ),
-                  // )
+
                 ],
               ),
               Column(

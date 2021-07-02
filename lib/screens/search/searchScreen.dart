@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app2/blocs/search_bloc.dart';
@@ -98,7 +99,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     color: Colors.black,),
                 ),
                 Container(
-                  height: 550,
+                  height: MediaQuery.of(context).size.height,
                   child: StreamBuilder(
                     stream: searchBloc.searchtream,
                     builder: (context, AsyncSnapshot<ItemMovie> snapshot) {
@@ -147,11 +148,20 @@ class _SearchScreenState extends State<SearchScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
                     child: ClipRRect(
-                      child: Image.network(
-                          'https://image.tmdb.org/t/p/w185${snapshot.data
+                      child: CachedNetworkImage(
+                          imageUrl: 'https://image.tmdb.org/t/p/w185${snapshot.data
                               .results[index].poster_path}',
                           height: 160,
-                          fit: BoxFit.fill
+                          fit: BoxFit.fill,
+                        errorWidget: (context, url, error) => Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/img_not_found.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+
                       ),
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
@@ -161,59 +171,61 @@ class _SearchScreenState extends State<SearchScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 160,
-                          child: Text(
-                            snapshot.data.results[index].title,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            RatingBarIndicator(
-                              rating:  double.parse(snapshot.data.results[index].vote_average )/ 2,
-                              itemBuilder: (context, index) => Icon(
-                                Icons.star,
-                                color: Colors.amber,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Text(
+                              snapshot.data.results[index].title,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
                               ),
-                              itemCount: 5,
-                              itemSize: 14,
-                              direction: Axis.horizontal,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 12),
-                              child:
-                              Text((  double.parse(snapshot.data.results[index].vote_average )/ 2).toString()),
-                            ),
-                          ],
-                        ),
-                        Text(snapshot.data.results[index].vote_count.toString() + " Ratings",style: TextStyle(fontSize: 12)),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: 160,
-                          child: Text(snapshot.data.results[index].overview,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                            style: TextStyle(
-                                fontSize: 14, color: Colors.black54),
-
                           ),
-                        )
+                          Row(
+                            children: [
+                              RatingBarIndicator(
+                                rating:  double.parse(snapshot.data.results[index].vote_average )/ 2,
+                                itemBuilder: (context, index) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                itemCount: 5,
+                                itemSize: 14,
+                                direction: Axis.horizontal,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 12),
+                                child:
+                                Text((  double.parse(snapshot.data.results[index].vote_average )/ 2).toString()),
+                              ),
+                            ],
+                          ),
+                          Text(snapshot.data.results[index].vote_count.toString() + " Ratings",style: TextStyle(fontSize: 12)),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Text(snapshot.data.results[index].overview,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.black54),
 
-                      ],
+                            ),
+                          )
+
+                        ],
+                      ),
                     ),
                   ),
                 ],
