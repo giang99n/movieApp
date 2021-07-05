@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app2/screens/account/account_screen.dart';
-import 'package:movie_app2/screens/browse/browse_screen.dart';
+
 import 'screens/screens.dart';
 
-enum Routes { splash, home,browse,account,screen }
+enum Routes { splash, home, search, detail }
 
 class _Paths {
   static const String splash = '/';
   static const String home = '/home';
-  static const String browse='/browse';
-  static const String account='/account';
-  static const String screen='/screen';
+  static const String search = '/search';
+  static const String detail = '/detail';
 
   static const Map<Routes, String> _pathMap = {
     Routes.splash: _Paths.splash,
     Routes.home: _Paths.home,
-    Routes.browse: _Paths.browse,
-    Routes.account: _Paths.account,
-    Routes.screen:_Paths.screen,
+    Routes.search: _Paths.search,
+    Routes.detail: _Paths.detail,
   };
 
   static String of(Routes route) => _pathMap[route];
@@ -33,13 +30,14 @@ class AppNavigator {
       case _Paths.splash:
         return MaterialPageRoute(builder: (_) => SplashScreen());
       case _Paths.home:
-        return MaterialPageRoute(builder: (_) => HomeScreen());
-      case _Paths.browse:
-        return MaterialPageRoute(builder: (_) => BrowseScreen());
-      case _Paths.account:
-        return MaterialPageRoute(builder: (_) => AccountScreen());
-      case _Paths.screen:
-        return MaterialPageRoute(builder: (_) => Screens());
+        return MaterialPageRoute(builder: (_) => NavScreen());
+      case _Paths.search:
+        return MaterialPageRoute(builder: (_) => SearchScreen());
+      case _Paths.detail:
+        final movieId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => MovieDetailScreen(movieId: movieId),
+        );
       default:
         throw Exception('Invalid route: ${settings.name}');
     }

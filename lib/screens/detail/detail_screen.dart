@@ -5,9 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 import 'package:movie_app2/blocs/movie_detail_bloc/movie_detail_bloc.dart';
-import 'package:movie_app2/blocs/movie_detail_bloc/movie_detail_event.dart';
-import 'package:movie_app2/blocs/movie_detail_bloc/movie_detail_state.dart';
 import 'package:movie_app2/models/movie_detail.dart';
 import 'package:url_launcher/url_launcher.dart';
 

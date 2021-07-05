@@ -1,19 +1,11 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app2/apis/rest_client.dart';
-import 'package:movie_app2/blocs/actor_bloc.dart';
-import 'package:movie_app2/configs/configs.dart';
-import 'package:movie_app2/blocs/movie_bloc.dart';
-import 'package:movie_app2/models/item_actor.dart';
-import 'package:movie_app2/models/item_movie.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:movie_app2/screens/search/searchScreen.dart';
-import 'package:movie_app2/utils/utils.dart';
-import 'package:movie_app2/widgets/actor_trending.dart';
-import 'package:movie_app2/widgets/continue_watch.dart';
-import 'package:movie_app2/widgets/recently_added.dart';
+
+import '../../blocs/blocs.dart';
+import '../../configs/configs.dart';
+import '../../models/models.dart';
+import '../../routes.dart';
+import '../../widgets/widgets.dart';
 
 class BrowseScreen extends StatefulWidget {
   @override
@@ -21,8 +13,9 @@ class BrowseScreen extends StatefulWidget {
 }
 
 class _BrowseScreenState extends State<BrowseScreen> {
-  MoviesBloc bloc =new MoviesBloc();
-  ActorBloc actorBloc=new ActorBloc();
+  MoviesBloc bloc = new MoviesBloc();
+  ActorBloc actorBloc = new ActorBloc();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,26 +51,35 @@ class _BrowseScreenState extends State<BrowseScreen> {
                   width: double.infinity,
                   height: 45,
                   child: TextButton(
-                    style: TextButton.styleFrom(shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      side: BorderSide(color: Color(0xffCED0D2), width: 1),
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        side: BorderSide(color: Color(0xffCED0D2), width: 1),
+                      ),
                     ),
-                    ),
-                    onPressed: (){
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context)=>SearchScreen()));
-                    },
+                    onPressed: () => AppNavigator.push(Routes.search),
                     child: SizedBox(
                       width: double.infinity,
                       height: double.infinity,
                       child: Stack(
                         alignment: AlignmentDirectional.centerStart,
                         children: [
-                          SizedBox(height:40,
-                              width:40,child: Center(child: Icon(Icons.search,color: Colors.black,),)),
+                          SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: Center(
+                                child: Icon(
+                                  Icons.search,
+                                  color: Colors.black,
+                                ),
+                              )),
                           Padding(
-                            padding: const EdgeInsets.only(left: 40,right: 40),
-                            child: Text("Search for movie",style: TextStyle(fontSize: 16,color: Colors.grey),),
+                            padding: const EdgeInsets.only(left: 40, right: 40),
+                            child: Text(
+                              "Search for movie",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.grey),
+                            ),
                           )
                         ],
                       ),
@@ -90,7 +92,12 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    modified_text(text:"Recently Added",size: 16,fontWeight: FontWeight.bold, color: Colors.black,),
+                    ModifiedText(
+                      text: "Recently Added",
+                      size: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                     InkWell(
                       child: Text(
                         "See all",
@@ -104,7 +111,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 stream: bloc.continueWatchMovie,
                 builder: (context, AsyncSnapshot<ItemMovie> snapshot) {
                   if (snapshot.hasData) {
-                    return buildListContinueWatch(snapshot,context);
+                    return buildListContinueWatch(snapshot, context);
                   } else if (snapshot.hasError) {
                     return Text(snapshot.error.toString());
                   }
@@ -116,7 +123,12 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    modified_text(text:"Top Actors",size: 16,fontWeight: FontWeight.bold, color: Colors.black,),
+                    ModifiedText(
+                      text: "Top Actors",
+                      size: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                     InkWell(
                       child: Text(
                         "See all",
@@ -131,7 +143,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 builder: (context, AsyncSnapshot<Actors> snapshot) {
                   print(snapshot.data.toString());
                   if (snapshot.hasData) {
-                    return buildListActorTrending(snapshot,context);
+                    return buildListActorTrending(snapshot, context);
                   } else if (snapshot.hasError) {
                     return Text(snapshot.error.toString());
                   }
@@ -143,7 +155,12 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    modified_text(text:"Top Genres",size: 16,fontWeight: FontWeight.bold, color: Colors.black,),
+                    ModifiedText(
+                      text: "Top Genres",
+                      size: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                     InkWell(
                       child: Text(
                         "See all",
@@ -153,9 +170,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
                   ],
                 ),
               ),
-
-
-
             ],
           ),
         ),
@@ -165,20 +179,17 @@ class _BrowseScreenState extends State<BrowseScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
     bloc.fetchAllMovies();
     actorBloc.fetchActors();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     bloc.dispose();
     actorBloc.dispose();
+
     super.dispose();
-
   }
-
-
 }

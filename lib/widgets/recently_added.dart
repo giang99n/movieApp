@@ -1,18 +1,16 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:movie_app2/apis/rest_client.dart';
-import 'package:movie_app2/configs/configs.dart';
-import 'package:movie_app2/blocs/movie_bloc.dart';
-import 'package:movie_app2/models/item_movie.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:movie_app2/screens/detail/detail_screen.dart';
-import 'package:movie_app2/utils/utils.dart';
-Widget buildListRecentlyAdded(AsyncSnapshot<ItemMovie> snapshot,BuildContext context) {
-  return  CarouselSlider.builder(
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+
+import '../models/item_movie.dart';
+import '../routes.dart';
+
+Widget buildListRecentlyAdded(
+    AsyncSnapshot<ItemMovie> snapshot, BuildContext context) {
+  return CarouselSlider.builder(
     itemCount: snapshot.data.results.length,
     options: CarouselOptions(
-      height: MediaQuery.of(context).size.height*1.1 / 4,
+      height: MediaQuery.of(context).size.height * 1.1 / 4,
       enableInfiniteScroll: true,
       autoPlay: true,
       autoPlayInterval: Duration(seconds: 5),
@@ -23,24 +21,18 @@ Widget buildListRecentlyAdded(AsyncSnapshot<ItemMovie> snapshot,BuildContext con
     ),
     itemBuilder: (BuildContext context, int index, int pageViewIndex) {
       return GestureDetector(
-        onTap: () {
-          print(snapshot.data.results[index].id);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MovieDetailScreen(movieId: snapshot.data.results[index].id),
-            ),
-          );
-        },
+        onTap: () =>
+            AppNavigator.push(Routes.detail, snapshot.data.results[index].id),
         child: Stack(
           alignment: Alignment.bottomLeft,
           children: <Widget>[
             ClipRRect(
               child: CachedNetworkImage(
-                imageUrl: 'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].backdrop_path}',
+                imageUrl:
+                    'https://image.tmdb.org/t/p/w185${snapshot.data.results[index].backdrop_path}',
                 fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width*3/4,
-                height: MediaQuery.of(context).size.height/4,
+                width: MediaQuery.of(context).size.width * 3 / 4,
+                height: MediaQuery.of(context).size.height / 4,
                 errorWidget: (context, url, error) => Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
